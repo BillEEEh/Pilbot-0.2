@@ -2,6 +2,7 @@
 const Discord = require('discord.js')
 const { token } = require('./config.json');
 const { MessageEmbed } = require('discord.js');
+const { DiscordTogether } = require('discord-together');
 const fs = require('fs');
 
 const client = new Discord.Client({
@@ -35,8 +36,10 @@ client.once('ready', () => {
 });
 
 const prefix = '$'
+client.discordTogether = new DiscordTogether(client);
 
-client.on('messageCreate', message => {
+
+client.on('messageCreate', async message => {
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
 	const args = message.content.slice(prefix.length).split(/ +/);
@@ -45,5 +48,6 @@ client.on('messageCreate', message => {
 	if (!client.commands.has(command)) return;
 	client.commands.get(command).execute(message, args);
 });
+
 
 client.login(token);

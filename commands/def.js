@@ -5,7 +5,7 @@ module.exports = {
     name: 'def',
     description: 'Grabs a definition for the word from urban dictionary',
     execute(message, args) {
-        const word = message.content.replace(`$${this.name} `, '');;
+        const word = message.content.replace(`$${this.name} `, '');
         const options = {
             method: 'GET',
             url: 'https://mashape-community-urban-dictionary.p.rapidapi.com/define',
@@ -27,7 +27,7 @@ module.exports = {
             message.reply(`${definition} \n \`\`\`${example}\`\`\``);
         }).catch(function (error) {
             console.error(error);
-            message.reply('Woord niet gevonden in Urban Dictionary.')
+            message.reply('Woord niet gevonden in Urban Dictionary.');
         });
 
         console.log(`${this.name} command uitgevoerd door ${message.author.username}`);

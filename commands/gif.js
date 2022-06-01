@@ -6,14 +6,12 @@ module.exports = {
     description: '',
     execute(message, args) {
         var word = message.content.replace(`$${this.name} `, '');
-        const random = Math.floor(Math.random() * 10);
         const option = {
             method: 'GET',
-            url: 'https://g.tenor.com/v1/search',
+            url: 'https://g.tenor.com/v1/random?',
             params: {
                 key: '603R7MO2I90U',
                 q: word,
-                limit: 10
             }
         }
 
@@ -22,9 +20,9 @@ module.exports = {
         } else {
             message.reply('Bezig met het zoeken van de GIF...').then(m => {
                 (axios.request(option).then(function (response){
-                    m.edit(response.data.results[random].media[0].gif.url).catch(function (error){
-                        m.edit('GIF niet gevonden.')
-                    })
+                    m.edit(response.data.results[0].media[0].gif.url)
+                }).catch(function (error){
+                    m.edit('GIF niet gevonden.');
                 }))
             })
         }

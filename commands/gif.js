@@ -5,16 +5,29 @@ module.exports = {
     name: 'gif',
     description: '',
     execute(message, args) {
-        const word = message.content.replace(`$${this.name} `, '');
-        const url = `https://api.c99.nl/gif?key=${apiKey}&keyword=${word}&json`;
+        var word = message.content.replace(`$${this.name} `, '');
         const random = Math.floor(Math.random() * 10);
+        const option = {
+            method: 'GET',
+            url: 'https://g.tenor.com/v1/search',
+            params: {
+                key: '603R7MO2I90U',
+                q: word,
+                limit: 10
+            }
+        }
 
-        message.reply('Bezig met GIF zoeken...').then(m => {
-            (axios.get(url).then(response => m.edit(response.data.images[random]))).catch(function (error){
-                console.error(error);
-                message.reply('GIF niet gevonden.');
-            });
-        });
+        if (word.includes('\\')) {
+            message.reply('Nice try <:jerry:956531885339729920>');
+        } else {
+            message.reply('Bezig met het zoeken van de GIF...').then(m => {
+                (axios.request(option).then(function (response){
+                    m.edit(response.data.results[random].media[0].gif.url).catch(function (error){
+                        m.edit('GIF niet gevonden.')
+                    })
+                }))
+            })
+        }
 
         console.log(`${this.name} command uitgevoerd door ${message.author.username}`);
     }

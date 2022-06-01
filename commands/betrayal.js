@@ -1,5 +1,5 @@
 module.exports = {
-    name: '',
+    name: 'betrayal',
     description: '',
     execute(message, args) {
         if (message.content === '$betrayal') {

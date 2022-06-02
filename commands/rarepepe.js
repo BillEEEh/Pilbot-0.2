@@ -14,7 +14,10 @@ module.exports = {
         }
         message.reply('Bezig met het zoeken van een pepe...').then(m => {
             (axios.request(option).then(function (response){
-                m.edit(response.data.results[0].media[0].gif.url).catch(function (error){
+                m.edit({
+                    content: ' ',
+                    files: [response.data.results[0].media[0].gif.url]
+                }).catch(function (error){
                     m.edit('GIF niet gevonden.')
                 })
             }))

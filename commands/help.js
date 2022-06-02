@@ -12,8 +12,6 @@ module.exports = {
             allCommandsString += '$' + file.toString().replace('.js', '') + '\n';
         }
 
-        console.log(allCommandsString)
-
         var avatarURL = message.member.displayAvatarURL();
         var userName = message.author.username;
         const { MessageEmbed } = require('discord.js');

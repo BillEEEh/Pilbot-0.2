@@ -38,6 +38,10 @@ client.discordTogether = new DiscordTogether(client);
 
 
 client.on('messageCreate', async message => {
+	if(message.content.includes('jerry')) {
+		message.react('<:jerry:956531885339729920>')
+	};
+
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
 	const args = message.content.slice(prefix.length).split(/ +/);

@@ -1,7 +1,6 @@
-
 const Discord = require('discord.js')
 const { token } = require('./config.json');
-const { MessageEmbed } = require('discord.js');
+const { generateDependencyReport } = require('@discordjs/voice');
 const { DiscordTogether } = require('discord-together');
 const fs = require('fs');
 
@@ -47,6 +46,12 @@ client.on('messageCreate', async message => {
 	if (!client.commands.has(command)) return;
 	client.commands.get(command).execute(message, args);
 });
+
+client.on('interactionCreate', async (interaction) => {
+	if (!interaction.isButton()) return;
+
+	
+})
 
 
 client.login(token);

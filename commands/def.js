@@ -1,5 +1,6 @@
 const { XRapidAPIKey } = require('../config.json');
 const axios = require('axios');
+const { MessageActionRow, MessageButton } = require('discord.js');
 
 module.exports = {
     name: 'def',
@@ -22,9 +23,18 @@ module.exports = {
             const example = response.data.list[0].example
                 .replaceAll('[', '')
                 .replaceAll(']', '');
+            const definitionURL = response.data.list[0].permalink
+
+            const row = new MessageActionRow()
+                .addComponents(
+                    new MessageButton()
+                        .setLabel('Link')
+                        .setStyle('LINK')
+                        .setURL(definitionURL)
+                );
 
 
-            message.reply(`${definition} \n \`\`\`${example}\`\`\``);
+            message.reply({ content: `${definition} \n \`\`\`${example}\`\`\` \n`, components: [row] });
         }).catch(function (error) {
             console.error(error);
             message.reply('Woord niet gevonden in Urban Dictionary.');

@@ -1,8 +1,10 @@
 const Discord = require('discord.js')
 const { token } = require('./config.json');
-const { generateDependencyReport } = require('@discordjs/voice');
+//const { generateDependencyReport } = require('@discordjs/voice');
 const { DiscordTogether } = require('discord-together');
 const fs = require('fs');
+
+//console.log(generateDependencyReport());
 
 const client = new Discord.Client({
 	intents: [
@@ -10,6 +12,7 @@ const client = new Discord.Client({
 		'GUILDS',
 		'GUILD_MESSAGES',
 		'GUILD_MESSAGE_REACTIONS',
+		'GUILD_VOICE_STATES',
 	]
 });
 
@@ -38,9 +41,7 @@ client.discordTogether = new DiscordTogether(client);
 
 
 client.on('messageCreate', async message => {
-	if(message.content.includes('jerry')) {
-		message.react('<:jerry:956531885339729920>')
-	};
+
 
 	if (!message.content.startsWith(prefix) || message.author.bot) return;
 
@@ -53,8 +54,18 @@ client.on('messageCreate', async message => {
 
 client.on('interactionCreate', async (interaction) => {
 	if (!interaction.isButton()) return;
+	if (interaction.user.id !== ('81784467353513984')) return;
 
-	
+	//
+	//
+	//testfunctie hieronder
+
+
+	//
+	//
+	//
+
+
 })
 
 

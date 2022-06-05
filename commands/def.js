@@ -5,6 +5,7 @@ const { MessageActionRow, MessageButton } = require('discord.js');
 module.exports = {
     name: 'def',
     description: 'Grabs a definition for the word from urban dictionary',
+    aliases: ["leave"],
     execute(message, args) {
         const word = message.content.replace(`$${this.name} `, '');
         const options = {

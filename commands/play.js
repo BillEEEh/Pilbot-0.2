@@ -1,12 +1,10 @@
-const { createAudioPlayer, joinVoiceChannel, NoSubscriberBehavior, createAudioResource, StreamType, AudioPlayerStatus, VoiceConnectionStatus  } = require('@discordjs/voice');
+const { createAudioPlayer, joinVoiceChannel, NoSubscriberBehavior, createAudioResource, StreamType, AudioPlayerStatus, VoiceConnectionStatus } = require('@discordjs/voice');
 const { join } = require('node:path');
 const { createReadStream } = require('node:fs');
 
-
-
 module.exports = {
     name: 'play',
-    description: '',
+    description: 'speelt een soundfile af',
     async execute(message, args) {
         const voiceChannel = message.member.voice.channel;
         const connection = joinVoiceChannel({
@@ -30,7 +28,7 @@ module.exports = {
             return message.channel.send("You dont have the correct permissions");
 
 
-        const resource = createAudioResource(join('./files/', 'filename.mp3'));
+        const resource = createAudioResource(join('./files/', 'test.mp3'));
 
         connection.subscribe(player);
 

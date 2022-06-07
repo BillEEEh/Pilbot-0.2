@@ -59,12 +59,10 @@ const talkedRecently = new Set();
 client.on('interactionCreate', async (interaction) => {
 	const { createAudioPlayer, joinVoiceChannel, NoSubscriberBehavior, createAudioResource, StreamType, AudioPlayerStatus, VoiceConnectionStatus, AudioPlayer } = require('@discordjs/voice');
 	const { join } = require('node:path');
+	console.log(`${interaction.member.nickname} heeft op een knop gedrukt.`);
 
 	if (!interaction.isButton()) return;
-
-	//Kijkt of het commando in een kanaal word gestuurd waar het woord 'bot' in staat.
-	// if(!(interaction.channel.name).toLowerCase().includes('bot')) return;
-
+	//if(!(interaction.channel.name).toLowerCase().includes('bot')) return;
 	if (interaction.member.voice.channelId === null) return;
 
 
@@ -89,7 +87,7 @@ client.on('interactionCreate', async (interaction) => {
 	} else {
 		talkedRecently.add(interaction.user.id);
 
-		const resource = createAudioResource(join('./soundboard/Floran/', interaction.customId + `.mp3`));
+		const resource = createAudioResource(join('./soundboard/', interaction.customId + `.mp3`));
 		connection.subscribe(player);
 		player.play(resource);
 

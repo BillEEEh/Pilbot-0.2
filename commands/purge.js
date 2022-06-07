@@ -4,8 +4,8 @@ module.exports = {
     execute(message, args) {
         if (message.author.id === '81784467353513984' ||
             message.author.id === '210093094241042433') {
-            var deleteNoString = message.content.slice(7)
-            var deleteNo = parseInt(deleteNoString)
+            const deleteNoString = message.content.slice(7)
+            const deleteNo = parseInt(deleteNoString)
 
             if (!isNaN(deleteNo) &&
                 (deleteNo > 0) &&

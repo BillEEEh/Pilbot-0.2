@@ -62,6 +62,9 @@ client.on('interactionCreate', async (interaction) => {
 
 	if (!interaction.isButton()) return;
 
+	//Kijkt of het commando in een kanaal word gestuurd waar het woord 'bot' in staat.
+	// if(!(interaction.channel.name).toLowerCase().includes('bot')) return;
+
 	if (interaction.member.voice.channelId === null) return;
 
 
@@ -96,7 +99,6 @@ client.on('interactionCreate', async (interaction) => {
 			talkedRecently.delete(interaction.user.id);
 		}, 5000);
 	}
-
 });
 
 

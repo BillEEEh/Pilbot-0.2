@@ -98,12 +98,22 @@ module.exports = {
                 .setStyle('SUCCESS'),
         );
 
-        const oergrap = new MessageActionRow().addComponents(
+        const rowJasper = new MessageActionRow().addComponents(
             new MessageButton()
-                .setCustomId('oergrap')
-                .setLabel('oergrap')
+                .setCustomId('JasperBroodtrommel')
+                .setLabel('Broodtrommel')
                 .setStyle('DANGER'),
-        )
+            new MessageButton()
+                .setCustomId('JasperHoezoniet')
+                .setLabel('Hoezo niet')
+                .setStyle('DANGER'),
+            new MessageButton()
+                .setCustomId('JasperIkHoorHet')
+                .setLabel('Ik hoor het')
+                .setStyle('DANGER'),
+        );
+
+
 
         message.reply({ content: 'Soundboard Floran:', components: [rowFlo1] });
         message.reply({ content: ' ', components: [rowFlo2] });
@@ -112,8 +122,7 @@ module.exports = {
 
         message.reply({ content: 'Soundboard Koen:', components: [rowKoen] });
 
-        message.reply({ content: 'oergrap', components [oergrap]})
-
+        message.reply({ content: 'Soundboard Jasper:', components: [rowJasper] });
 
         console.log(`${this.name} command uitgevoerd door ${message.author.username}`);
     }

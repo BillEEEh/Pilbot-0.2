@@ -18,7 +18,7 @@ module.exports = {
 
         //TTS
         const url = googleTTS.getAudioUrl(content, {
-            lang: 'en-us',
+            lang: 'nl',
             slow: false,
             host: 'https://translate.google.com',
         });

@@ -3,6 +3,7 @@ const { token } = require('./config.json');
 //const { generateDependencyReport } = require('@discordjs/voice');
 const { DiscordTogether } = require('discord-together');
 const fs = require('fs');
+const { RequestManager } = require('@discordjs/rest');
 
 //console.log(generateDependencyReport());
 
@@ -39,7 +40,6 @@ client.once('ready', () => {
 const prefix = '$'
 client.discordTogether = new DiscordTogether(client);
 
-
 client.on('messageCreate', async message => {
 
 
@@ -52,19 +52,50 @@ client.on('messageCreate', async message => {
 	client.commands.get(command).execute(message, args);
 });
 
+
+// Timeout voor de gebruikers op het soundboard:
+const talkedRecently = new Set();
+
 client.on('interactionCreate', async (interaction) => {
+	const { createAudioPlayer, joinVoiceChannel, NoSubscriberBehavior, createAudioResource, StreamType, AudioPlayerStatus, VoiceConnectionStatus, AudioPlayer } = require('@discordjs/voice');
+	const { join } = require('node:path');
+
 	if (!interaction.isButton()) return;
-	if (interaction.user.id !== ('81784467353513984')) return;
 
-	//
-	//
-	//testfunctie hieronder
+	if (interaction.member.voice.channelId === null) return;
 
 
-	//
-	//
-	//
+	const voiceChannel = interaction.member.voice.channel;
+	const permissions = voiceChannel.permissionsFor(interaction.client.user);
+	if (!permissions.has("SPEAK"))
+		return interaction.channel.send("You dont have the correct permissions");
 
+	const connection = joinVoiceChannel({
+		channelId: voiceChannel.id,
+		guildId: voiceChannel.guildId,
+		adapterCreator: interaction.guild.voiceAdapterCreator,
+	});
+	const player = createAudioPlayer({
+		behaviors: {
+			noSubscriber: NoSubscriberBehavior.Pause,
+		}
+	});
+
+	if (talkedRecently.has(interaction.user.id)) {
+		interaction.channel.send(`${interaction.member.nickname}, wacht even met het volgende geluid (5sec. cooldown).`);
+	} else {
+		talkedRecently.add(interaction.user.id);
+
+		const resource = createAudioResource(join('./soundboard/Floran/', interaction.customId + `.mp3`));
+		connection.subscribe(player);
+		player.play(resource);
+
+		interaction.reply({ content: `${interaction.member.nickname} heeft het soundboard gebruikt.` })
+
+		setTimeout(() => {
+			talkedRecently.delete(interaction.user.id);
+		}, 5000);
+	}
 
 });
 

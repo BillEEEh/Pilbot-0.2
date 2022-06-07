@@ -5,16 +5,20 @@ module.exports = {
     name: 'tts',
     description: 'Speelt tts af',
     execute(message, args) {
+        if(message.member.voice.channelId === null) return;
+
+        const content = message.content.replace(`$${this.name} `, '');
+        if(message.mentions.members.size > 0 ) return message.reply('$tts mag geen @mentions hebben.')
+        if (content.length > 200) return message.reply('$tts mag maximaal 200 karakters hebben.');
         //Controleert op permissions
         const voiceChannel = message.member.voice.channel;
         const permissions = voiceChannel.permissionsFor(message.client.user);
         if (!permissions.has("SPEAK"))
             return message.channel.send("You dont have the correct permissions");
 
-        //TTS 
-        const content = message.content.replace(`$${this.name} `, '');
+        //TTS
         const url = googleTTS.getAudioUrl(content, {
-            lang: 'nl',
+            lang: 'en-us',
             slow: false,
             host: 'https://translate.google.com',
         });
@@ -46,13 +50,10 @@ module.exports = {
             console.log('Speler is begonnen met spelen')
         })
 
-        player.on(AudioPlayerStatus.Idle, () => {
-            connection.destroy();
-        })
-
-
-
-
+        // Disconnect de bot uit voice als er niks afgespeeld wordt.
+        // player.on(AudioPlayerStatus.Idle, () => {
+        //     connection.destroy();
+        // })
 
         console.log(`${this.name} command uitgevoerd door ${message.author.username}`);
     }

@@ -12,7 +12,7 @@ module.exports = {
                 .setStyle('PRIMARY'),
             new MessageButton()
                 .setCustomId('FloranHallo')
-                .setLabel('WTF')
+                .setLabel('Hallo')
                 .setStyle('PRIMARY'),
             new MessageButton()
                 .setCustomId('FloranHAN')
@@ -20,7 +20,7 @@ module.exports = {
                 .setStyle('PRIMARY'),
             new MessageButton()
                 .setCustomId('FloranWTF')
-                .setLabel('Hallo')
+                .setLabel('WTF')
                 .setStyle('PRIMARY'),
             new MessageButton()
                 .setCustomId('FloranGrappig')
@@ -98,12 +98,21 @@ module.exports = {
                 .setStyle('SUCCESS'),
         );
 
+        const oergrap = new MessageActionRow().addComponents(
+            new MessageButton()
+                .setCustomId('oergrap')
+                .setLabel('oergrap')
+                .setStyle('DANGER'),
+        )
+
         message.reply({ content: 'Soundboard Floran:', components: [rowFlo1] });
         message.reply({ content: ' ', components: [rowFlo2] });
 
         message.reply({ content: 'Soundboard Tony:', components: [rowTony] });
 
         message.reply({ content: 'Soundboard Koen:', components: [rowKoen] });
+
+        message.reply({ content: 'oergrap', components [oergrap]})
 
 
         console.log(`${this.name} command uitgevoerd door ${message.author.username}`);

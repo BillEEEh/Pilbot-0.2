@@ -59,12 +59,14 @@ const talkedRecently = new Set();
 client.on('interactionCreate', async (interaction) => {
 	const { createAudioPlayer, joinVoiceChannel, NoSubscriberBehavior, createAudioResource, StreamType, AudioPlayerStatus, VoiceConnectionStatus, AudioPlayer } = require('@discordjs/voice');
 	const { join } = require('node:path');
-	console.log(`${interaction.member.nickname} heeft op een knop gedrukt.`);
+	console.log(`${interaction.member.nickname}(${interaction.user.id}) heeft op de '${interaction.customId}' knop gedrukt op het soundboard.`);
 
 	if (!interaction.isButton()) return;
 	//if(!(interaction.channel.name).toLowerCase().includes('bot')) return;
-	if (interaction.member.voice.channelId === null) return;
-
+	if (interaction.member.voice.channelId === null) {
+		interaction.channel.send(`Je moet in een voice kanaal zitten om het soundboard te gebruiken <@${interaction.user.id}>`);
+		return;
+	}
 
 	const voiceChannel = interaction.member.voice.channel;
 	const permissions = voiceChannel.permissionsFor(interaction.client.user);
@@ -82,21 +84,25 @@ client.on('interactionCreate', async (interaction) => {
 		}
 	});
 
-	if (talkedRecently.has(interaction.user.id)) {
-		interaction.channel.send(`${interaction.member.nickname}, wacht even met het volgende geluid (5sec. cooldown).`);
-	} else {
-		talkedRecently.add(interaction.user.id);
+	try {
+		if (talkedRecently.has(interaction.user.id)) {
+			interaction.channel.send(`Wacht even met het volgende geluid (5sec. cooldown).`);
+		} else {
+			talkedRecently.add(interaction.user.id);
 
-		const resource = createAudioResource(join('./soundboard/', interaction.customId + `.mp3`));
-		connection.subscribe(player);
-		player.play(resource);
+			const resource = createAudioResource(join('./soundboard/', interaction.customId + `.mp3`));
+			connection.subscribe(player);
+			player.play(resource);
 
-		interaction.reply({ content: `${interaction.member.nickname} heeft het soundboard gebruikt.` })
+			//interaction.reply({ content: `${interaction.member.nickname} heeft het soundboard gebruikt.` })
 
-		setTimeout(() => {
-			talkedRecently.delete(interaction.user.id);
-		}, 5000);
-	}
+			setTimeout(() => {
+				talkedRecently.delete(interaction.user.id);
+			}, 5000);
+		}
+	} catch (error) {
+		console.error(error);
+	};
 });
 
 

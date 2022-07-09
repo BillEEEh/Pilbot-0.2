@@ -101,7 +101,15 @@ module.exports = {
         const rowJasper = new MessageActionRow().addComponents(
             new MessageButton()
                 .setCustomId('JasperBroodtrommel')
-                .setLabel('Broodtrommel')
+                .setLabel('Broodtrommel kwijt')
+                .setStyle('DANGER'),
+            new MessageButton()
+                .setCustomId('JasperBroodtrommel2')
+                .setLabel('Mijn broodtrommel')
+                .setStyle('DANGER'),
+            new MessageButton()
+                .setCustomId('JasperBroodtrommel3')
+                .setLabel('MIJN BROODTROMMEL')
                 .setStyle('DANGER'),
             new MessageButton()
                 .setCustomId('JasperHoezoniet')

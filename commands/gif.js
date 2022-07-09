@@ -1,4 +1,4 @@
-const { apiKey } = require('../config.json');
+const { tenorAPIKey } = require('../config.json');
 const axios = require('axios');
 
 module.exports = {
@@ -10,7 +10,7 @@ module.exports = {
             method: 'GET',
             url: 'https://g.tenor.com/v1/random?',
             params: {
-                key: '603R7MO2I90U',
+                key: tenorAPIKey,
                 q: word,
             }
         }

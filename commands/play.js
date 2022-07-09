@@ -1,47 +1,33 @@
-const { createAudioPlayer, joinVoiceChannel, NoSubscriberBehavior, createAudioResource, StreamType, AudioPlayerStatus, VoiceConnectionStatus, AudioPlayer } = require('@discordjs/voice');
-const { join } = require('node:path');
-const { createReadStream } = require('node:fs');
-
 module.exports = {
     name: 'play',
-    description: 'Speelt een soundfile af',
-    async execute(message, args) {
-        const voiceChannel = message.member.voice.channel;
-        const connection = joinVoiceChannel({
-            channelId: voiceChannel.id,
-            guildId: voiceChannel.guildId,
-            adapterCreator: message.guild.voiceAdapterCreator,
-        });
-        const player = createAudioPlayer({
-            behaviors: {
-                noSubscriber: NoSubscriberBehavior.Pause,
-            }
-        });
+    description: '',
+    execute(message, args) {
+        const ytdl = require('ytdl-core');
+		const url = args[0];
 
-        connection.on(VoiceConnectionStatus.Ready, () => {
-            console.log('The connection has entered the Ready state - ready to play audio!');
-        });
+		if(!url) return message.channel.send({ content : 'No url provided' });
 
-        // Controleert op permissions
-        const permissions = voiceChannel.permissionsFor(message.client.user);
-        if (!permissions.has("SPEAK"))
-            return message.channel.send("You dont have the correct permissions");
+		const Discord = require('@discordjs/voice');
+		const stream = ytdl(url, { filter: 'audioonly' });
 
+		const channel = message.member.voice.channel;
 
-        const resource = createAudioResource(join('./files/', 'test.mp3'));
+		const player = Discord.createAudioPlayer();
+		const resource = Discord.createAudioResource(stream);
 
-        connection.subscribe(player);
+		const connection = Discord.joinVoiceChannel({
+			channelId: channel.id,
+			guildId: message.guild.id,
+			adapterCreator: message.guild.voiceAdapterCreator,
+		});
 
-        player.play(resource);
+		player.play(resource);
+		connection.subscribe(player);
 
-        player.on(AudioPlayerStatus.Playing, () => {
-            console.log('Speler is begonnen met spelen')
-        })
-
-        player.on(AudioPlayerStatus.Idle, () => {
-            connection.destroy();
-        })
-
+		player.on(Discord.AudioPlayerStatus.Idle, () => {
+			connection.destroy();
+		});
+        
         console.log(`${this.name} command uitgevoerd door ${message.author.username}`);
     }
 }

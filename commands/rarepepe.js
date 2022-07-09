@@ -1,3 +1,4 @@
+const { tenorAPIKey } = require('../config.json');
 const axios = require('axios');
 
 module.exports = {
@@ -8,7 +9,7 @@ module.exports = {
             method: 'GET',
             url: 'https://g.tenor.com/v1/random?',
             params: {
-                key: '603R7MO2I90U',
+                key: tenorAPIKey,
                 q: 'rare pepe',
             }
         }
@@ -18,7 +19,7 @@ module.exports = {
                     content: ' ',
                     files: [response.data.results[0].media[0].gif.url]
                 }).catch(function (error){
-                    m.edit('GIF niet gevonden.')
+                    m.edit('Pepe is verstopt.')
                 })
             }))
         })
